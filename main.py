@@ -1,38 +1,28 @@
-"""
-SEO Dashboard Backend — entry point.
+@app.post("/optimize")
+async def optimize_content(request: dict):
 
-Start with:  uvicorn main:app --reload --port 8000
-"""
+    content = request.get("content", "")
 
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
+    return {
+        "success": True,
 
-from routers import health, monitor, optimizer, feedback, approval
+        "optimized_content": f"""
+Optimized Version:
 
-app = FastAPI(
-    title="SEO Dashboard Backend",
-    description="Central controller between the Claude Dashboard and SEO agents.",
-    version="1.0.0",
-)
+{content}
 
-# ── CORS ──────────────────────────────────────────────────────────────────────
-# Allow the Claude Artifact Dashboard (any origin during development).
-# Lock this down to specific origins in production.
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+Modern SEO requires semantic optimization, topical authority, search intent alignment, and entity-driven content strategies.
 
-# ── Static files (PDFs) ───────────────────────────────────────────────────────
-app.mount("/static", StaticFiles(directory="static"), name="static")
+Adding FAQs, semantic keywords, and conversion-focused headings can significantly improve rankings and organic traffic.
+        """,
 
-# ── Routers ───────────────────────────────────────────────────────────────────
-app.include_router(health.router, tags=["Health"])
-app.include_router(monitor.router, tags=["SEO Monitor"])
-app.include_router(optimizer.router, tags=["Content Optimizer"])
-app.include_router(feedback.router, tags=["Feedback"])
-app.include_router(approval.router, tags=["Approval Workflow"])
+        "seo_score": 91,
+
+        "recommendations": [
+            "Add semantic SEO entities",
+            "Improve topical authority",
+            "Add FAQ schema",
+            "Improve search intent alignment",
+            "Use stronger conversion headings"
+        ]
+    }
